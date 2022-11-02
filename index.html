@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link rel="stylesheet" href="home.css">
+
+</head>
+
+<body>
+    <div id="a2" class="container  mt-1 w-50 p-5 text-center">
+        <label for="" class="text-white">WEATHER DETAILS</label>
+        <input type="text" id="user1" class="form-control mt-2" placeholder="Type city.......">
+        <button type="button" onclick="search()" class="btn btn-success mt-3 ">view details</button>
+    </div>
+
+
+    <div class="mt-4" id="results"></div>
+
+</body>
+<script>
+    function search() {
+        cname = user1.value
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cname}&appid=5b4bee0ba241d092159faf007e166080`).then(res => res.json()).then(data => displaydata(data))
+    }
+    function displaydata(whetherdetails) {
+        cname = whetherdetails.name
+        temp = whetherdetails.main.temp
+        c = Math.floor(temp - 273.15)
+        type = whetherdetails.weather[0].main
+        pressure = whetherdetails.main.pressure
+        humidity = whetherdetails.main.humidity
+        wind = whetherdetails.wind.speed
+        visibility = whetherdetails.visibility
+        htmlData = `
+
+        <div class="row p-5 mt-5 text-white" style="height: 300px; font-family: 'Times New Roman', Times, serif;" >
+        <div class="col-lg-5 col-md-6 col-sm-12  pt-5 ">
+            <h4> <i class="fa-sharp fa-solid fa-location-dot fs-5"></i>${cname}</h4> <br>
+            <h1 class="ms-5" style="font-size: 90px;"  > <i class="fa-solid fa-temperature-three-quarters fs-1"></i> ${c}°<span style="font-size:large;">C</span></h1>
+            <h3 class="mt-4 ms-5 ps-3">  ${type} </h3>
+        </div>
+        <div class="col-lg-7 col-md-6 col-sm-12 mt-5  pt-5 ">
+            <h3> <i class="fa-solid fa-wind"></i> ${wind}km/hr</h3> <hr>
+            <h3>Humidity: ${humidity}</h3> <hr>
+            <h3>Pressure: ${pressure}mb</h3> <hr>
+            <h3>Visibility: ${visibility}m</h3> <hr>
+        </div>
+        </div>`
+        results.innerHTML = htmlData
+    }
+</script>
+
+</html>
